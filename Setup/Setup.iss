@@ -30,6 +30,9 @@ external 'UpdateComplexType@files:NetDll.dll stdcall';
 procedure UpdateComplexTypeReference(var value: ComplexType);
 external 'UpdateComplexTypeReference@files:NetDll.dll stdcall';
 
+procedure GetComplexType(out value: ComplexType);
+external 'GetComplexType@files:NetDll.dll stdcall';
+
 
 procedure InitializeWizard;
 var
@@ -54,6 +57,9 @@ begin
    // UpdateComplexTypeReference
    UpdateComplexTypeReference(complexValue);
    if ((complexValue.StringValue <> 'changed') or (complexValue.IntValue <> 40)) then RaiseException('UpdateComplexTypeReference failed');
+   // GetComplexType
+   GetComplexType(complexValue);
+   if ((complexValue.StringValue <> 'new') or (complexValue.IntValue <> 1)) then RaiseException('GetComplexType failed');
   except
     Log('Error calling NetDll: ' + AddPeriod(GetExceptionMessage));
     Abort();

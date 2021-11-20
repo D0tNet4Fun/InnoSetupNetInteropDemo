@@ -32,5 +32,15 @@ namespace NetDll
                 IntValue = 40
             };
         }
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void GetComplexType(out ComplexType value)
+        {
+            value = new ComplexType
+            {
+                StringValue = "new",
+                IntValue = 1
+            };
+        }
     }
 }
