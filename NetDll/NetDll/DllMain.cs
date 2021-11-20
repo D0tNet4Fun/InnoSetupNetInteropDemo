@@ -15,5 +15,12 @@ namespace NetDll
         {
             value += " (updated)";
         }
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void UpdateComplexType(ref ComplexType value)
+        {
+            value.StringValue += " (updated)";
+            value.IntValue++;
+        }
     }
 }

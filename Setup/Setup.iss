@@ -12,16 +12,27 @@ Source: "..\NetDll\NetDll\bin\Debug\net4.5\x86\NetDll.pdb"; DestDir: "{app}"; Fl
 
 [Code]
 
+type
+  ComplexType = record
+    StringValue: WideString;
+    IntValue: Integer;
+  end;
+
 procedure UpdateInt(var value: Integer);
 external 'UpdateInt@files:NetDll.dll stdcall';
 
 procedure UpdateString(var value: WideString);
 external 'UpdateString@files:NetDll.dll stdcall';
 
+procedure UpdateComplexType(var value: ComplexType);
+external 'UpdateComplexType@files:NetDll.dll stdcall';
+
+
 procedure InitializeWizard;
 var
   intValue: Integer;
   stringValue: WideString;
+  complexValue: ComplexType;
 begin
   try
    // UpdateInt
@@ -32,6 +43,11 @@ begin
    stringValue := 'value';
    UpdateString(stringValue);
    if (stringValue <> 'value (updated)') then RaiseException('UpdateString failed');
+   // UpdateComplexType
+   complexValue.StringValue := 'value';
+   complexValue.IntValue := 20;
+   UpdateComplexType(complexValue);
+   if ((complexValue.StringValue <> 'value (updated)') or (complexValue.IntValue <> 21)) then RaiseException('UpdateComplexType failed');
   except
     Log('Error calling NetDll: ' + AddPeriod(GetExceptionMessage));
     Abort();
