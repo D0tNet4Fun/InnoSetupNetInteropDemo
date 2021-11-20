@@ -9,5 +9,11 @@ namespace NetDll
         {
             input++;
         }
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void UpdateString([MarshalAs(UnmanagedType.BStr)] ref string value)
+        {
+            value += " (updated)";
+        }
     }
 }
