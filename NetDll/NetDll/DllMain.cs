@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace NetDll
 {
@@ -60,6 +61,20 @@ namespace NetDll
                 }
             };
             length = array.Length;
+        }
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void ProcWithComplexTypeArg(ref ComplexType value);
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void CallProcedure([MarshalAs(UnmanagedType.FunctionPtr)] ProcWithComplexTypeArg callback)
+        {
+            var complexType = new ComplexType
+            {
+                StringValue = "callback",
+                IntValue = 30
+            };
+            callback(ref complexType);
         }
     }
 }

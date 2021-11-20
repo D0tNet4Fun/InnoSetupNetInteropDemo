@@ -7,6 +7,7 @@ namespace NetDll
     {
         [MarshalAs(UnmanagedType.BStr)]
         public string StringValue;
+        [MarshalAs(UnmanagedType.U4)]
         public int IntValue;
     }
 }
