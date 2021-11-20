@@ -39,7 +39,11 @@ external 'GetComplexTypeArray@files:NetDll.dll stdcall';
 procedure CallProcedure(lpCallbackProc: longword);
 external 'CallProcedure@files:NetDll.dll stdcall';
 
+function CallFunction(lpCallbackProc: longword): Integer;
+external 'CallFunction@files:NetDll.dll stdcall';
+
 procedure CallbackProc(var complexValue: ComplexType); forward;
+function CallbackFunction(var complexValue: ComplexType): Integer; forward;
 
 procedure InitializeWizard;
 var
@@ -78,6 +82,9 @@ begin
    if (complexValue.StringValue <> 'Item 2') or (complexValue.IntValue <> 2) then RaiseException('GetComplexTypeArray[1] failed');
    // CallProcedure
    CallProcedure(CreateCallback(@CallbackProc));
+   // CallFunction
+   intValue := CallFunction(CreateCallback(@CallbackFunction));
+   if (intValue <> 100) then RaiseException('CallFunction did not return the expected result'); // 100 is returned by CallbackFunction below
   except
     Log('Error calling NetDll: ' + AddPeriod(GetExceptionMessage));
     Abort();
@@ -87,4 +94,10 @@ end;
 procedure CallbackProc(var complexValue: ComplexType);
 begin
   if (complexValue.StringValue <> 'callback') or (complexValue.IntValue <> 30) then RaiseException('CallProcedure failed');
+end;
+
+function CallbackFunction(var complexValue: ComplexType): Integer;
+begin
+  if (complexValue.StringValue <> 'callback') or (complexValue.IntValue <> 30) then RaiseException('CallFunction failed');
+  Result := 100;
 end;
