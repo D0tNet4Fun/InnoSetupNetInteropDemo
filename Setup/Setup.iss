@@ -33,12 +33,17 @@ external 'UpdateComplexTypeReference@files:NetDll.dll stdcall';
 procedure GetComplexType(out value: ComplexType);
 external 'GetComplexType@files:NetDll.dll stdcall';
 
+procedure GetComplexTypeArray(out length: Integer; out value: array of ComplexType);
+external 'GetComplexTypeArray@files:NetDll.dll stdcall';
+
 
 procedure InitializeWizard;
 var
   intValue: Integer;
   stringValue: WideString;
   complexValue: ComplexType;
+  length: Integer;
+  complexValues: array of ComplexType;
 begin
   try
    // UpdateInt
@@ -60,6 +65,14 @@ begin
    // GetComplexType
    GetComplexType(complexValue);
    if ((complexValue.StringValue <> 'new') or (complexValue.IntValue <> 1)) then RaiseException('GetComplexType failed');
+   // GetComplexTypeArray
+   GetComplexTypeArray(length, complexValues);
+   if (length <> 2) then RaiseException('GetComplexTypeArray failed (length)');
+   complexValue := complexValues[0];
+   if (complexValue.StringValue <> 'Item 1') or (complexValue.IntValue <> 1) then RaiseException('GetComplexTypeArray[0] failed');
+   complexValue := complexValues[1];
+   if (complexValue.StringValue <> 'Item 2') or (complexValue.IntValue <> 2) then RaiseException('GetComplexTypeArray[1] failed');
+
   except
     Log('Error calling NetDll: ' + AddPeriod(GetExceptionMessage));
     Abort();

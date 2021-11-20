@@ -42,5 +42,24 @@ namespace NetDll
                 IntValue = 1
             };
         }
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void GetComplexTypeArray(out int length, out ComplexType[] array)
+        {
+            array = new[]
+            {
+                new ComplexType
+                {
+                    StringValue = "Item 1",
+                    IntValue = 1,
+                },
+                new ComplexType
+                {
+                    StringValue = "Item 2",
+                    IntValue = 2
+                }
+            };
+            length = array.Length;
+        }
     }
 }
