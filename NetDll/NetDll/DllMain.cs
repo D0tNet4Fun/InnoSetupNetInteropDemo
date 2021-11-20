@@ -22,5 +22,15 @@ namespace NetDll
             value.StringValue += " (updated)";
             value.IntValue++;
         }
+
+        [DllExport(CallingConvention.StdCall)]
+        public static void UpdateComplexTypeReference(ref ComplexType value)
+        {
+            value = new ComplexType
+            {
+                StringValue = "changed",
+                IntValue = 40
+            };
+        }
     }
 }
